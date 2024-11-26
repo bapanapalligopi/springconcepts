@@ -360,6 +360,146 @@ This will fetch `Author` entities with their `books` in a single query.
 The **N+1 Selects Problem** occurs when your application makes one query to fetch the main entities and then N additional queries to fetch related entities. To avoid this problem:
 - **Use eager fetching** to load related entities in one query.
 - **Use join fetching** in custom queries to fetch everything at once.
+
+- Unintended database queries can lead to **performance degradation** and **unnecessary load** on the database. These issues are typically caused by mismanagement of how database interactions are handled within the application, especially when using **ORMs** (Object-Relational Mappers) like **JPA** or **Spring Data JDBC**.
+
+### Types of Unintended Database Queries
+
+1. **N+1 Selects Problem**
+   - As discussed earlier, this occurs when an application makes multiple database queries to fetch related entities. It results in **N+1** queries (one for the main entity and one for each related entity), which can cause performance issues when dealing with large datasets.
+
+2. **Lazy Loading and Unintentional Queries**
+   - Lazy loading refers to the delayed loading of related entities when they are accessed for the first time. Sometimes, lazy loading can lead to unintended queries being executed **after the main query**, which wasn't intended by the developer. This is common when lazy loading is used for large collections, and the related entities are not immediately needed.
+
+3. **Redundant Queries**
+   - Redundant queries are queries that are executed multiple times to fetch the same data when a single query would suffice. This can happen if the application repeatedly fetches the same data inside loops or if the data is not cached properly.
+
+4. **Unoptimized Querying in Loops**
+   - If you are iterating over a collection of entities and querying the database inside a loop (e.g., querying the database for every iteration), this can result in excessive database queries. This is often due to the application being unaware that a single query could be used instead of querying the database repeatedly in each iteration.
+
+5. **Queries Triggered by Fetching Data from Caches**
+   - Sometimes, a caching mechanism might be used, but it is not properly synchronized or invalidated. This can result in unintended queries when data is fetched from the cache and the cache does not contain the correct or updated data.
+
+### Example of Unintended Database Queries
+
+#### Scenario 1: **Lazy Loading Leading to Unintended Queries**
+If you have an entity with lazy-loaded relationships, such as an `Author` with many `Books`, accessing those books may trigger unintended database queries.
+
+```java
+@Entity
+public class Author {
+    @Id
+    private Long id;
+    
+    private String name;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private List<Book> books;  // Lazy loading of books
+}
+```
+
+#### Code to Access Author and Books:
+```java
+List<Author> authors = authorRepository.findAll();  // Loads all authors
+for (Author author : authors) {
+    System.out.println(author.getName());
+    // Accessing books for each author (triggers N+1 queries)
+    for (Book book : author.getBooks()) {
+        System.out.println("    " + book.getTitle());
+    }
+}
+```
+
+- The initial query to fetch authors will only retrieve the authors. However, when you access `author.getBooks()`, **additional queries** will be triggered for each author to fetch their books, which might lead to unnecessary database queries.
+  
+**Solution**: You could use **eager fetching** or **JOIN fetching** to avoid these unintended queries:
+```java
+@Query("SELECT a FROM Author a JOIN FETCH a.books")
+List<Author> findAllAuthorsWithBooks();
+```
+
+This would load both `Author` and `Books` in a **single query** instead of multiple queries.
+
+#### Scenario 2: **Redundant Queries in Loops**
+Another common problem is querying the database in a loop unnecessarily. Suppose you have a list of `Authors` and for each one, you query their `Books` inside a loop:
+
+```java
+List<Author> authors = authorRepository.findAll();
+for (Author author : authors) {
+    List<Book> books = bookRepository.findByAuthorId(author.getId());  // Unnecessary queries in each loop
+    for (Book book : books) {
+        System.out.println(book.getTitle());
+    }
+}
+```
+
+In this case, for each author, an additional query is executed to fetch their books, resulting in redundant queries.
+
+**Solution**: You can optimize this by using a **single query** with a join or by fetching all the books upfront:
+```java
+List<Author> authors = authorRepository.findAll();
+List<Book> books = bookRepository.findAllByAuthorIds(authors.stream().map(Author::getId).collect(Collectors.toList()));
+
+Map<Long, List<Book>> booksByAuthor = books.stream()
+    .collect(Collectors.groupingBy(Book::getAuthorId));
+
+for (Author author : authors) {
+    List<Book> authorBooks = booksByAuthor.get(author.getId());
+    for (Book book : authorBooks) {
+        System.out.println(book.getTitle());
+    }
+}
+```
+
+Here, you fetch all books once and avoid unnecessary queries.
+
+#### Scenario 3: **Unoptimized Query Execution**
+Another example of unintended queries is when you fail to limit the scope of the query or add unnecessary filters, which results in more database calls than needed.
+
+For example:
+```java
+List<Author> authors = authorRepository.findByName("John");
+```
+This could result in querying the database even though the data has already been fetched in the context of another operation. This is common when there is no effective caching or query optimization.
+
+**Solution**: Avoid executing queries that fetch the same data multiple times within the same context. Consider implementing a caching mechanism (like **Spring Cache**) or refactoring the code to ensure that data is only queried once.
+
+### Best Practices to Prevent Unintended Database Queries
+
+1. **Use Eager Loading Carefully**:
+   - **Eager loading** can sometimes help prevent unintended queries, but overusing it can lead to performance issues (e.g., fetching large collections in one query). Be mindful of how much data you are fetching and the tradeoffs between lazy and eager loading.
+
+2. **Avoid Queries Inside Loops**:
+   - Avoid querying the database in loops (such as querying for each author’s books inside a loop). Instead, fetch the data in bulk or use **batching** techniques to optimize query execution.
+
+3. **Optimize Relationships with `JOIN` Queries**:
+   - Use **JOIN** or **JOIN FETCH** to fetch related entities together in one query, reducing the number of database calls.
+   - For example, use:
+     ```java
+     @Query("SELECT a FROM Author a JOIN FETCH a.books")
+     List<Author> findAllAuthorsWithBooks();
+     ```
+
+4. **Leverage Caching**:
+   - Implement **caching** (e.g., using **Spring Cache**) to store the results of expensive queries and avoid redundant database hits.
+
+5. **Use DTO Projections**:
+   - Instead of fetching full entities, use **DTO (Data Transfer Object)** projections to fetch only the necessary data, which can help in reducing the overhead caused by loading unnecessary properties.
+
+6. **Monitor and Log SQL Queries**:
+   - Enable **SQL logging** in your application to track how many queries are executed. Tools like **Hibernate SQL logging** can be useful to detect unintended queries.
+   - Example for enabling SQL logging in Spring:
+     ```properties
+     spring.jpa.properties.hibernate.format_sql=true
+     spring.jpa.show-sql=true
+     ```
+
+7. **Batch Fetching**:
+   - Use **batch fetching** to load multiple related entities in a single query. For example, in JPA, you can specify `@BatchSize` to fetch a batch of related entities together.
+
+### Conclusion
+
+Unintended database queries can significantly impact the performance of your application, leading to unnecessary database load, slow response times, and inefficient resource usage. By identifying common causes such as **lazy loading**, **redundant queries**, and **unoptimized loops**, and applying best practices like **join fetching**, **DTO projections**, and **caching**, you can mitigate these issues and ensure efficient database interactions in your application.
 - **Use DTO projections** for more targeted data fetching.
 - **Optimize with `@BatchSize` or `@EntityGraph`** for fine-grained control.
 
