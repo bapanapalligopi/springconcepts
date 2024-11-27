@@ -1,49 +1,49 @@
-what is junit?
-=====================================
-- junit is testing framework for java
-- it is used to write and run repeatable tests
-- junit helps verify that individuals units of code work as expected.
 
-JUnit is a widely used testing framework in Java designed to perform unit testing. It allows developers to write test cases to verify that individual units of code, such as methods or classes, behave as expected.
+### What is JUnit?
+JUnit is a testing framework for Java that is used to write and run repeatable tests. It is primarily used to verify that individual units of code (such as methods or classes) work as expected.
 
-how junit works?
-=====================================
-=> first we will write the method for testing the code and then we will annotate the method with @Test annotation.
-=> junit provides the assertions to check the if the results are as expected.
-=> junit platform has the test runners , test runners has the capable of execute the tests and report the results.
-=> junit can be integrsted with IDE and build tools fot easy execution.
+- **JUnit is a framework**: It provides a set of tools to write and run tests for Java applications.
+- **Used for unit testing**: It helps in testing individual parts of the code (methods or functions).
+- **Repeatable tests**: Tests can be run multiple times to ensure that changes don't break existing functionality.
 
-java code => class under the test
-unit test => using junit framework
-test runners=> junit runners
+### How JUnit Works?
+- **Write the method**: The first step is to write the method that you want to test. This method will be placed under a test class.
+- **Annotate with `@Test`**: After writing the method, we annotate the testing method with the `@Test` annotation. This lets JUnit know that this method should be treated as a test.
+- **Assertions**: JUnit provides assertion methods like `assertEquals()`, `assertTrue()`, `assertFalse()`, etc., to check whether the actual results match the expected results.
+- **Test Runners**: JUnit test runners are responsible for executing the tests and reporting the results. JUnit supports integration with IDEs like Eclipse, IntelliJ IDEA, and build tools like Maven and Gradle.
 
-key features of Junit
-============================
-annotations make test management easy
-assertions are used to check the expected results
-test runners execute your tests ans report the results
-integration wuth build tool like maven and gradle
+In JUnit:
+- **Java code**: Refers to the class you are testing.
+- **Unit test**: The test cases you write using JUnit framework to test the Java code.
+- **Test runners**: Tools in JUnit that execute the test cases and report the outcome.
 
-junit basic concepts
-=================================
-system under the test or class under test => the class or system we want to test  
-method under the test => the method or function we want to test
+### Key Features of JUnit
+- **Annotations**: JUnit uses annotations like `@Test`, `@Before`, `@After` to make test management easier.
+- **Assertions**: Assertions are used to check whether the results are as expected.
+- **Test Runners**: Test runners are responsible for executing the tests and reporting results.
+- **Integration**: JUnit integrates well with build tools like Maven and Gradle.
 
-The "method under test" refers to the actual method from the class being tested. It is the method whose functionality is being verified using assertions.
+### JUnit Basic Concepts
+1. **System Under Test (SUT)**: The class or system you want to test.
+2. **Method Under Test**: The method or function in the class that you are testing.
 
-test class=> normal class containd lot og test methods and every method is  annotated with the @Test
-test method is a method in test class contains small piece of code that test the perticular method in test class
-assertions are use d to check the excepted resuts in methods of test class  and some of most famous asserions are assertEquals,True,FalseThrows
+The "method under test" refers to the actual method that you want to verify using assertions. 
 
-tets runner is responsible for executing the tet methods in a test class and report the results.
-The test runner is responsible for running the test methods, executing them, and reporting whether the tests passed or failed.
+- **Test Class**: A normal Java class that contains multiple test methods. Every method in this class is annotated with `@Test`.
+- **Test Method**: A method in the test class that contains code to test a particular method or function in the class being tested.
+- **Assertions**: Assertions are used in test methods to check whether the results match the expected values. Some of the most commonly used assertions are:
+  - `assertEquals()`
+  - `assertTrue()`
+  - `assertFalse()`
+  - `assertThrows()`
+  
+- **Test Runner**: The test runner is responsible for executing the test methods in the test class and reporting the results. Test runners can be configured to run tests in specific environments and report detailed test results.
 
-setting up environment for junit
-===================================
-create a maven project
-add the dependencies
+### Setting Up Environment for JUnit
+1. **Create a Maven Project**: If you're using Maven, you need to add JUnit dependencies to your `pom.xml` file to enable JUnit in your project.
+2. **Add Dependencies**: Below is an example of how to add the JUnit 5 dependency to your Maven project:
 
-
+```xml
 <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 <dependency>
     <groupId>org.junit.jupiter</groupId>
@@ -51,19 +51,45 @@ add the dependencies
     <version>5.11.3</version>
     <scope>test</scope>
 </dependency>
+```
 
+This dependency allows you to use JUnit in your project, which is required for writing and running tests.
 
-@Test annotation
-============================
-The @Test annotation is used to identify a method as a test method. When a method is annotated with @Test, JUnit recognizes it as a test to be executed.
-marks the method as test method
-junit automatically ruins all methods annotatted with @Test with in that test class or package
-from org.junit.jupiter.api package
-public ,protected,default visibility, private in junit5
-test class also can be public ,default.
-In JUnit, test methods annotated with @Test must have a void return type, meaning they cannot return any value.
-If a test fails in JUnit 5, an AssertionError is thrown when the actual output doesn't match the expected output.
-In JUnit 5, methods annotated with @Test can have public, protected, or package-private (default) visibility. They cannot be private, as JUnit needs access to these methods to run them as tests.
+### `@Test` Annotation
+The `@Test` annotation is used to mark a method as a test case in JUnit. When a method is annotated with `@Test`, JUnit recognizes it as a test method that should be executed. 
+
+- **Marks the method as a test**: By annotating a method with `@Test`, you are indicating that this method is a test case.
+- **JUnit automatically runs methods annotated with `@Test`**: Once a method is annotated, the JUnit test runner will automatically execute it when you run the tests.
+- **Visibility**: In JUnit 5, test methods annotated with `@Test` can be public, protected, or package-private (default), but they cannot be private.
+- **Return Type**: Test methods should have a `void` return type. They do not return any values.
+- **Failure**: If the test fails, an `AssertionError` is thrown, and JUnit reports that the actual result does not match the expected result.
+
+### Example Code with JUnit
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CalculatorTest {
+
+    @Test
+    public void testAdd() {
+        Calculator calculator = new Calculator();
+        int result = calculator.add(5, 3);
+        assertEquals(8, result, "Addition result should be 8");
+    }
+}
+```
+
+In this example:
+- We have a method `testAdd()` that tests the `add()` method of a `Calculator` class.
+- The `assertEquals()` assertion is used to verify that the result of the `add(5, 3)` method call is equal to `8`.
+
+### Sample Image:
+Here is an example image demonstrating Spring Boot testing with JUnit:
 
 ![Spring Boot Testing Example](https://github.com/bapanapalligopi/springconcepts/blob/main/spring_boot_testing/images/junitrecentimage.png)
 
+---
+
+With this, you've learned about JUnit's basic concepts, how to set it up, and how to write simple test cases to verify the functionality of your code.
