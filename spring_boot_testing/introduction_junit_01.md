@@ -65,5 +65,5 @@ In JUnit, test methods annotated with @Test must have a void return type, meanin
 If a test fails in JUnit 5, an AssertionError is thrown when the actual output doesn't match the expected output.
 In JUnit 5, methods annotated with @Test can have public, protected, or package-private (default) visibility. They cannot be private, as JUnit needs access to these methods to run them as tests.
 
-![Spring Boot Testing Example](https://github.com/bapanapalligopi/spring_boot_testing/raw/main/images/junitrecentimage.png)
+![Spring Boot Testing Example](https://github.com/bapanapalligopi/springconcepts/blob/main/spring_boot_testing/images/junitrecentimage.png)
 
