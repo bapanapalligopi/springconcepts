@@ -93,3 +93,224 @@ Here is an example image demonstrating Spring Boot testing with JUnit:
 ---
 
 With this, you've learned about JUnit's basic concepts, how to set it up, and how to write simple test cases to verify the functionality of your code.
+Here is a more polished and well-structured version of the content, ensuring clarity and correctness:
+
+---
+
+### **JUnit Assertion Methods**
+
+The `Assertions` class in JUnit provides static methods for verifying test conditions. These methods play a vital role in validating the expected outcomes of test cases.
+
+---
+
+#### **1. `assertTrue` Method**
+- **Purpose:** Validates that the condition supplied is `true`.
+- **Behavior:** If the condition is `true`, the test case passes. Otherwise, it fails.
+- **Overloaded Methods:** There are six overloaded variants:
+  1. `assertTrue(boolean actual)`  
+     Validates a boolean condition directly.
+  2. `assertTrue(Supplier<Boolean> actualSupplier)`  
+     Executes lazily using Java 8 functional programming. The condition is evaluated only when assertions are executed.
+  3. `assertTrue(boolean actual, String message)`  
+     Provides a custom failure message if the condition is false.
+  4. `assertTrue(Supplier<Boolean> actualSupplier, String message)`  
+     Lazy evaluation of the boolean supplier, with a custom failure message.
+  5. `assertTrue(boolean actual, Supplier<String> messageSupplier)`  
+     Executes the custom message logic only if the condition is false.
+  6. `assertTrue(Supplier<Boolean> actualSupplier, Supplier<String> messageSupplier)`  
+     Both the boolean supplier and custom message supplier are evaluated lazily.
+
+**Example:**  
+```java
+assertTrue(condition, "Condition must be true");
+assertTrue(() -> someLazyCondition(), () -> "Lazy evaluation failed message");
+```
+
+---
+
+#### **2. `assertFalse` Method**
+- **Purpose:** Opposite of `assertTrue`, it validates that the condition is `false`.
+- **Behavior:** If the condition is `false`, the test case passes; otherwise, it fails.
+- **Overloaded Methods:** The same six variants are available, mirroring `assertTrue`.
+
+---
+
+#### **3. `assertNull` Method**
+- **Purpose:** Checks whether an object is `null`.
+- **Behavior:** If the object is `null`, the test case passes; otherwise, it fails.
+- **Overloaded Methods:**  
+  1. `assertNull(Object actual)`  
+  2. `assertNull(Object actual, String message)`  
+  3. `assertNull(Object actual, Supplier<String> messageSupplier)`  
+
+**Example:**  
+```java
+assertNull(someObject, "Object should be null");
+```
+
+---
+
+#### **4. `assertNotNull` Method**
+- **Purpose:** Checks whether an object is not `null`.
+- **Behavior:** If the object is not `null`, the test case passes; otherwise, it fails.
+- **Overloaded Methods:**  
+  1. `assertNotNull(Object actual)`  
+  2. `assertNotNull(Object actual, String message)`  
+  3. `assertNotNull(Object actual, Supplier<String> messageSupplier)`  
+
+**Example:**  
+```java
+assertNotNull(someObject, "Object should not be null");
+```
+
+---
+
+### **Code Examples**
+
+#### **`Student` Model**
+```java
+package com.junitpractice.demo.models;
+
+public class Student {
+
+    private int id;
+    private String name;
+
+    // Getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Constructor
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+```
+
+---
+
+#### **`StudentService` Class**
+```java
+package com.junitpractice.demo.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.junitpractice.demo.models.Student;
+
+public class StudentService {
+
+    private List<Student> students = new ArrayList<>();
+
+    public List<Student> getStudents() {
+        return this.students;
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public Student getStudentById(int id) {
+        return students.stream()
+                .filter(student -> student.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+}
+```
+
+---
+
+#### **`StudentServiceTest` Class**
+```java
+package com.junitpractice.demo.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import com.junitpractice.demo.models.Student;
+
+class StudentServiceTest {
+
+    @Test
+    public void getStudentsTestUsingAssertionTrue() {
+        StudentService service = new StudentService();
+
+        Boolean actualResults = service.getStudents().isEmpty();
+
+        assertTrue(actualResults, "The students list should be empty");
+    }
+
+    @Test
+    public void getStudentsTestUsingAssertionTrueNot() {
+        StudentService service = new StudentService();
+        Boolean actualResults = service.getStudents().isEmpty();
+
+        assertTrue(() -> actualResults, () -> "The students list is empty");
+    }
+
+    @Test
+    public void getStudentsListFalse() {
+        StudentService service = new StudentService();
+        Boolean actualResults = service.getStudents().isEmpty();
+
+        assertFalse(() -> actualResults, () -> "The students list is not empty");
+    }
+
+    @Test
+    public void addStudentTestNullCheck() {
+        StudentService service = new StudentService();
+        Student student = null;
+
+        assertNull(student, "The student object is null, so it cannot be added");
+    }
+
+    @Test
+    public void addStudentTestNullCheckFalse() {
+        StudentService service = new StudentService();
+        Student student = new Student(1, "Student Name");
+
+        service.addStudent(student);
+
+        assertNotNull(student, "A student object was found");
+    }
+
+    @Test
+    public void getStudentByIdTest() {
+        StudentService service = new StudentService();
+        Student student = new Student(1, "Gopi");
+        service.addStudent(student);
+
+        Student actualStudent = service.getStudentById(1);
+
+        assertNotNull(actualStudent, "The student should not be null when fetched by ID");
+    }
+
+    @Test
+    public void getStudentByIdTestNegative() {
+        StudentService service = new StudentService();
+
+        Student actualStudent = service.getStudentById(1);
+
+        assertNull(actualStudent, "No student should be found with this ID");
+    }
+}
+```
+
+--- 
+
