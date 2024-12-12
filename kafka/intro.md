@@ -32,3 +32,32 @@ producer-->messages->send to->kafkabroker
 consumer:
 =========
 consumer is an application , reads messages from kafka broker.
+
+kafka broker---> cosumers
+
+============
+how data is stored in kafka broker
+===========
+kafka topic
+===================
+topic is category where the messages is stored, data can be any type of format
+categorize the messages in kafka brokers
+topic is identified by a name
+you can't query data form the topic like sql
+===================
+kafka partions
+===================
+topics are divided into a number of partitions, which contain records in an unchangeble sequence.
+
+topi1-: partition-1,2,3,,,,....
+
+===========
+offset 
+======
+it is id given to messages as the arrive at parttions
+==================
+topic->partition-1-> 0,1,2,3,4,5,6,7... are the offsets for the messages
+=========
+consumer groups
+===========
+consumer group contains one or more  consumers to consumer the messages .
