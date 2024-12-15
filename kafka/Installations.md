@@ -103,4 +103,6 @@ After starting Kafka, you can create a topic to test it out. Run the following c
 
 By following the above steps, you should have **Apache Kafka** up and running on your Windows machine. Kafka can now be used to send and receive messages in real time, and you can start building real-time data streaming applications.
 
-If you're looking to run Kafka in a production environment, consider deploying it on Linux-based servers or using a managed Kafka service like **Confluent Cloud**.
+files for linux and windows operating system in kafka looks like below image
+
+![image](https://github.com/user-attachments/assets/ec238d2c-5169-4cb4-a555-7f7b20374c94)
