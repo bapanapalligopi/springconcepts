@@ -101,3 +101,26 @@ http://localhost:8080/api/v1/message/send-message-to-topic?message=hello
 
 ![image](https://github.com/user-attachments/assets/97c9fae5-1669-4202-a71e-86343c891fe2)
 
+creating kafka consumer
+
+package com.kafka_project_example.kafka_project.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaConsumer {
+	
+	private static final Logger LOGGER= LoggerFactory.getLogger(KafkaConsumer.class);
+	
+	@KafkaListener(topics = "kAFKA_PROJECT_TOPIC",groupId = "kafka_project")
+	public void kafkaConsumer(String message) {
+		
+		LOGGER.info(String.format("message received->%s",message));
+	}
+}
+![image](https://github.com/user-attachments/assets/98f67710-3f74-4fae-a2b3-1b2c5d4563aa)
+
+![image](https://github.com/user-attachments/assets/791c6a11-a99b-494b-a5d2-7dd0f75f912f)
