@@ -302,9 +302,188 @@ public void cabLocation(String location) {
 
 ---
 
-### **Key Takeaways**
-- The `LocationService` listens to the `cab-location` Kafka topic and processes location updates.
-- The use of `@KafkaListener` makes it easy to integrate Kafka consumers with Spring Boot.
-- Consumer groups ensure scalability and fault tolerance by distributing message processing across multiple consumers. 
+To configure a Kafka consumer in your **`application.properties`** file for a Spring Boot application, the properties you've already provided cover the essentials. However, you can add additional configurations to optimize and enhance the consumer functionality. Here's what you should consider:
 
-Let me know if you need further assistance with advanced features like offset management, JSON deserialization, or testing!
+---
+
+### **Current Properties Explanation**
+
+1. **Basic Configuration**:
+   - **`server.port=8081`**: The application will run on port `8081`.
+   - **`spring.kafka.consumer.bootstrap-servers=localhost:9092`**: Specifies the Kafka broker to connect to.
+   - **`spring.kafka.consumer.key-serializer=org.apache.kafka.common.serialization.StringSerializer`**: Serializes the message key (redundant in a consumer setup; use deserializers).
+   - **`spring.kafka.consumer.value-serializer=org.apache.kafka.common.serialization.StringSerializer`**: Serializes the message value (use `value-deserializer` instead).
+   - **`spring.kafka.consumer.group-id=user-group`**: Configures the consumer group name.
+   - **`spring.kafka.consumer.auto-offset-reset=earliest`**: Reads from the beginning of the topic if no previous offset exists.
+
+---
+
+### **Updated Properties**
+
+Correcting and expanding upon your configuration:
+
+```properties
+# Application Server Configuration
+server.port=8081
+
+# Kafka Consumer Configuration
+spring.kafka.consumer.bootstrap-servers=localhost:9092
+
+# Key and Value Deserialization
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+# Consumer Group
+spring.kafka.consumer.group-id=user-group
+
+# Offset Reset Policy
+spring.kafka.consumer.auto-offset-reset=earliest
+
+# Max Poll Records (How many messages are fetched per poll)
+spring.kafka.consumer.max-poll-records=10
+
+# Enable Auto Commit for Offsets
+spring.kafka.consumer.enable-auto-commit=true
+spring.kafka.consumer.auto-commit-interval=1000
+
+# Heartbeat Interval for Kafka Broker (Consumer Keep-Alive)
+spring.kafka.consumer.heartbeat-interval=3000
+
+# Session Timeout (Time before broker considers the consumer dead)
+spring.kafka.consumer.session-timeout=10000
+
+# Fetch Max Wait (Max time to wait for records to fill up a poll request)
+spring.kafka.consumer.fetch-max-wait=500
+```
+
+---
+
+### **Newly Added Properties**
+
+#### **1. Key and Value Deserializers**
+```properties
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+```
+- **Purpose**:
+  - Kafka transmits messages as byte arrays. These properties ensure the consumer deserializes the key and value back into readable `String` format.
+  - Correcting the `key-serializer` and `value-serializer` in your original configuration, as they are meant for producers.
+
+---
+
+#### **2. Auto Commit**
+```properties
+spring.kafka.consumer.enable-auto-commit=true
+spring.kafka.consumer.auto-commit-interval=1000
+```
+- **Purpose**:
+  - Enables Kafka to automatically commit offsets (the last consumed message position) periodically.
+  - **`auto-commit-interval`**: Specifies the frequency (in milliseconds) at which offsets are committed. Default is `5000 ms`.
+
+---
+
+#### **3. Max Poll Records**
+```properties
+spring.kafka.consumer.max-poll-records=10
+```
+- **Purpose**:
+  - Defines the maximum number of records the consumer fetches in a single poll.
+  - Adjust this based on your processing capacity. Setting it too high can overwhelm the application, while setting it too low might result in underutilization.
+
+---
+
+#### **4. Heartbeat Interval**
+```properties
+spring.kafka.consumer.heartbeat-interval=3000
+```
+- **Purpose**:
+  - Interval (in milliseconds) at which the consumer sends heartbeats to the broker to indicate it’s alive.
+  - Must be less than `session-timeout`.
+
+---
+
+#### **5. Session Timeout**
+```properties
+spring.kafka.consumer.session-timeout=10000
+```
+- **Purpose**:
+  - Maximum time (in milliseconds) before the broker considers a consumer dead if no heartbeat is received.
+  - If the timeout is exceeded, the consumer is removed from the group, and partitions are reassigned.
+
+---
+
+#### **6. Fetch Max Wait**
+```properties
+spring.kafka.consumer.fetch-max-wait=500
+```
+- **Purpose**:
+  - Maximum time (in milliseconds) the broker waits to fill a batch of records to send to the consumer.
+  - Lowering this value reduces latency but might result in smaller batches.
+
+---
+
+### **Optional Enhancements**
+
+#### **1. SSL or Security Settings**
+If your Kafka setup uses SSL or SASL for secure communication, add these:
+```properties
+spring.kafka.ssl.trust-store-location=classpath:truststore.jks
+spring.kafka.ssl.trust-store-password=yourPassword
+spring.kafka.ssl.key-store-location=classpath:keystore.jks
+spring.kafka.ssl.key-store-password=yourPassword
+spring.kafka.ssl.key-password=yourKeyPassword
+spring.kafka.properties.security.protocol=SSL
+```
+
+---
+
+#### **2. JSON Deserialization**
+If the consumer processes JSON messages, use Spring Kafka’s built-in JSON support:
+1. **Add Dependency**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.kafka</groupId>
+       <artifactId>spring-kafka</artifactId>
+   </dependency>
+   ```
+2. **Update Deserializer Configuration**:
+   ```properties
+   spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+   spring.kafka.consumer.properties.spring.json.trusted.packages=*
+   ```
+
+---
+
+### **Complete Example**
+Here's the final `application.properties` file:
+
+```properties
+# Server Configuration
+server.port=8081
+
+# Kafka Consumer Settings
+spring.kafka.consumer.bootstrap-servers=localhost:9092
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.group-id=user-group
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.enable-auto-commit=true
+spring.kafka.consumer.auto-commit-interval=1000
+spring.kafka.consumer.max-poll-records=10
+spring.kafka.consumer.heartbeat-interval=3000
+spring.kafka.consumer.session-timeout=10000
+spring.kafka.consumer.fetch-max-wait=500
+
+# Optional JSON Deserialization (if needed)
+# spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+# spring.kafka.consumer.properties.spring.json.trusted.packages=*
+```
+
+---
+
+### **Key Takeaways**
+- You already have a solid base configuration, but adding properties like `max-poll-records`, `session-timeout`, and deserialization options ensures optimal performance.
+- Fine-tuning these values depends on your application's throughput and resource requirements.
+- For JSON messages, configure the `JsonDeserializer`.
+
+Let me know if you need help with specific configurations or troubleshooting!
