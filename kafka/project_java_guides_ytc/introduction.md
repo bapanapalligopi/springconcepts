@@ -66,3 +66,32 @@ public class KafkaProducer {
 	
 }
 creating a rest api to send message to a kafka topic by producer
+package com.kafka_project_example.kafka_project.controller;
+
+import java.net.http.HttpResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.kafka_project_example.kafka_project.services.KafkaProducer;
+
+@RestController
+@RequestMapping("/api/v1/message")
+public class MessageController {
+
+	@Autowired
+	KafkaProducer kafkaProducer;
+	
+	@GetMapping("/send-message-to-topic")
+	public ResponseEntity<String> publicMessage(@RequestParam("message") String message){
+		
+		kafkaProducer.sendMessage(message);
+		
+		return ResponseEntity.ok("sucess");
+		
+	}
+}
