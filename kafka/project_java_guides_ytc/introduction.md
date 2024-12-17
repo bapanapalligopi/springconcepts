@@ -95,3 +95,9 @@ public class MessageController {
 		
 	}
 }
+call the res api by post man
+
+http://localhost:8080/api/v1/message/send-message-to-topic?message=hello
+
+![image](https://github.com/user-attachments/assets/97c9fae5-1669-4202-a71e-86343c891fe2)
+
