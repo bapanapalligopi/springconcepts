@@ -38,3 +38,31 @@ public class KafkaConfig {
 		
 	}
 }
+create a kafka producer
+
+package com.kafka_project_example.kafka_project.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaProducer {
+
+	//inject kafka_template for auto config
+	@Autowired
+	KafkaTemplate<String, Object> kafkaTemplate;
+	
+	private static final Logger LOGGER =LoggerFactory.getLogger(KafkaProducer.class);
+	//sending messages to topic by producers
+	public String sendMessage(String message) {
+		//get kafka template
+		kafkaTemplate.send("kAFKA_PROJECT_TOPIC", message);
+		LOGGER.info(String.format("Message sent {}",message));
+		return "message send successfully";
+	}
+	
+}
+creating a rest api to send message to a kafka topic by producer
