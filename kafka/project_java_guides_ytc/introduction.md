@@ -13,3 +13,28 @@ and you will get the image like
 start the kafka broker
 C:\kafka\bin\windows>kafka-server-start.bat C://kafka//config//server.properties
 ![image](https://github.com/user-attachments/assets/f033e58b-4f93-4f22-8ae7-330b0d783268)
+kafka architecture
+![image](https://github.com/user-attachments/assets/20e3053d-0861-4c06-83c1-43e5893cdd9f)
+
+creation of topic in kafka cluster
+package com.kafka_project_example.kafka_project.config;
+
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.stereotype.Component;
+
+@Component
+@Configuration
+public class KafkaConfig {
+
+	@Bean
+	public NewTopic topic() {
+		
+		return TopicBuilder
+				.name("kAFKA_PROJECT_TOPIC")
+				.build();
+		
+	}
+}
