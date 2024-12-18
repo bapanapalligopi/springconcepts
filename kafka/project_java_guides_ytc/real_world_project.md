@@ -43,4 +43,4 @@ add packaging as jar in child-1 project
 create application.properties file
 
 ![image](https://github.com/user-attachments/assets/3876e176-bf98-4645-a890-9f14391f2252)
-
+https://github.com/Gopi17-Developer/wikimedia_kafka_project
