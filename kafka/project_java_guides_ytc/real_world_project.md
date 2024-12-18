@@ -31,3 +31,16 @@ public class KafkaProducerWikimediaApplication {
 		SpringApplication.run(KafkaProducerWikimediaApplication.class);
 	}
 }
+
+do maven clean to check any build issue
+
+![image](https://github.com/user-attachments/assets/f56c62ea-6a19-4517-92ac-2e90fa5425a9)
+
+![image](https://github.com/user-attachments/assets/4fe8ab0a-8e0c-4f37-af9b-2f20dd60f520)
+add packaging as jar in child-1 project 
+
+![image](https://github.com/user-attachments/assets/c0101e7c-a78a-4acf-9c6a-914e792dac02)
+create application.properties file
+
+![image](https://github.com/user-attachments/assets/3876e176-bf98-4645-a890-9f14391f2252)
+
