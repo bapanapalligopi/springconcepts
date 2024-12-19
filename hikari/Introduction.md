@@ -132,4 +132,135 @@ Leak detection is helpful when debugging issues related to database connections 
 ### **Conclusion**
 
 Using a connection pool like HikariCP is essential for improving the performance of your database interactions in Spring Boot applications. By reusing existing connections, you reduce the overhead of opening and closing connections for each request, leading to faster and more efficient database operations. Adjusting HikariCP properties allows you to fine-tune the pool to suit your application's needs and improve overall performance.
+The properties you've listed cover most of the essential HikariCP configuration parameters needed for efficient database connection pooling in a Spring Boot application. However, there are a few additional properties that can be important depending on your use case. Here are some additional properties you might consider:
 
+### **Additional Important HikariCP Properties**
+
+1. **`spring.datasource.hikari.validation-timeout`**  
+   Specifies the **timeout** (in milliseconds) for validating a connection from the pool before using it. This is helpful to ensure connections are valid before they're returned to the caller.
+   - **Default value**: 5000ms (5 seconds)
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.validation-timeout=5000
+     ```
+
+2. **`spring.datasource.hikari.connection-test-query`**  
+   Defines a **SQL query** used to validate a connection. If set, this query is run before returning a connection from the pool. It can be useful in environments where connections are prone to becoming stale.
+   - **Example** (for MySQL):
+     ```properties
+     spring.datasource.hikari.connection-test-query=SELECT 1
+     ```
+
+3. **`spring.datasource.hikari.isolation-level`**  
+   Sets the default **transaction isolation level** for connections in the pool. You can specify the isolation level according to your requirements (e.g., `READ_COMMITTED`, `SERIALIZABLE`).
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.isolation-level=READ_COMMITTED
+     ```
+
+4. **`spring.datasource.hikari.auto-commit`**  
+   Defines whether each connection is **auto-committed** by default. If set to `true`, every statement will be committed immediately after execution.
+   - **Default value**: `true`
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.auto-commit=false
+     ```
+
+5. **`spring.datasource.hikari.maximum-connection-age`**  
+   Sets the **maximum age** of a connection in the pool before it is closed and replaced. This is useful for long-running applications where you want to periodically refresh connections.
+   - **Default value**: `0` (no expiration)
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.maximum-connection-age=3600000
+     ```
+
+6. **`spring.datasource.hikari.read-only`**  
+   Specifies whether connections from the pool should be **read-only** by default. This is useful for applications that only need read access to the database.
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.read-only=true
+     ```
+
+7. **`spring.datasource.hikari.register-mbeans`**  
+   Enables or disables registering HikariCP **MBeans** for monitoring purposes. Enabling this will expose JMX metrics for monitoring the pool status, such as active connections, idle connections, and connection usage.
+   - **Default value**: `false`
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.register-mbeans=true
+     ```
+
+8. **`spring.datasource.hikari.keepalive-time`**  
+   Sets the **maximum time** a connection can be kept open after being closed and before being removed from the pool. This helps manage the lifecycle of idle connections and prevents premature removal.
+   - **Example**:
+     ```properties
+     spring.datasource.hikari.keepalive-time=300000
+     ```
+
+### **Example Configuration with All Properties**
+
+Here's an extended version of the configuration that includes these additional properties:
+
+```properties
+# Maximum number of connections in the pool
+spring.datasource.hikari.maximum-pool-size=20
+
+# Minimum number of idle connections to maintain
+spring.datasource.hikari.minimum-idle=5
+
+# Connection timeout (how long to wait for a connection from the pool before timing out)
+spring.datasource.hikari.connection-timeout=30000
+
+# Idle timeout (how long a connection can remain idle before being closed)
+spring.datasource.hikari.idle-timeout=600000
+
+# Maximum lifetime of a connection in the pool
+spring.datasource.hikari.max-lifetime=1800000
+
+# Name of the connection pool
+spring.datasource.hikari.pool-name=MyHikariPool
+
+# Enable debug logging for HikariCP configuration
+logging.level.com.zaxxer.hikari.HikariConfig=debug
+
+# Enable trace logging for HikariCP
+logging.level.com.zaxxer.hikari=trace
+
+# Detect connection leaks (threshold in milliseconds)
+spring.datasource.hikari.leak-detection-threshold=15000
+
+# SQL query to validate connections before using them
+spring.datasource.hikari.connection-test-query=SELECT 1
+
+# Timeout for connection validation
+spring.datasource.hikari.validation-timeout=5000
+
+# Default transaction isolation level
+spring.datasource.hikari.isolation-level=READ_COMMITTED
+
+# Whether connections should be auto-committed
+spring.datasource.hikari.auto-commit=false
+
+# Maximum age of a connection before it is closed and replaced
+spring.datasource.hikari.maximum-connection-age=3600000
+
+# Whether connections should be read-only by default
+spring.datasource.hikari.read-only=true
+
+# Enable JMX monitoring for the connection pool
+spring.datasource.hikari.register-mbeans=true
+
+# Maximum time a connection can be kept open after being closed
+spring.datasource.hikari.keepalive-time=300000
+```
+
+### **When to Use These Properties**
+
+- **Validation properties (`connection-test-query`, `validation-timeout`)**: Useful when dealing with databases that may occasionally close connections or have intermittent network issues.
+- **Transaction properties (`auto-commit`, `isolation-level`)**: Useful for applications that require specific transaction behavior. For example, setting `auto-commit=false` ensures transactions are managed manually.
+- **Connection lifecycle properties (`maximum-connection-age`, `keepalive-time`)**: Use these to control how long connections stay alive and how often they are refreshed, which can be helpful in high-load applications where connections may become stale over time.
+- **Read-only mode**: Ideal for scenarios where the application only needs read access, helping to reduce the chance of accidental data modifications.
+- **JMX monitoring**: Enabling this property provides useful metrics for production environments to monitor the health and activity of the connection pool.
+
+---
+
+By adding these additional properties, you can fine-tune HikariCP’s behavior to better match your application’s specific needs, improving connection management and overall performance.
