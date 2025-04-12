@@ -29,4 +29,5 @@ The method returns a `RepeatStatus` value, which indicates whether the tasklet s
 - The `Tasklet` interface is for defining a unit of work in a Spring Batch job.
 - The `execute` method is where the tasklet's logic is implemented. It should return `RepeatStatus.FINISHED` when the task is complete or `RepeatStatus.CONTINUABLE` if the task needs to keep running.
 - The `StepContribution` and `ChunkContext` parameters provide information about the current step execution, which you can use to track progress or handle shared state across tasklet invocations.
-
+![image](https://github.com/user-attachments/assets/65045bab-b96a-4164-b500-051c87b7b2da)
+![image](https://github.com/user-attachments/assets/2df7ec3f-0fb6-41b3-8eca-96b1b85817b5)
