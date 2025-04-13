@@ -1,4 +1,4 @@
-Absolutely! Let’s now go over **`@AfterAll`** in JUnit — the final piece of the test lifecycle puzzle. Here's a clear breakdown of what it is, why it’s used, pros/cons, a simple example, and when to use it. 👇
+![image](https://github.com/user-attachments/assets/7cabcb62-6d45-49ee-a74a-9eb8fc44a50c)
 
 ---
 
