@@ -52,3 +52,15 @@ public interface PasswordEncoder {
 ```
 ![image](https://github.com/user-attachments/assets/ebf8bada-4517-4dfd-9956-801d3c240bd5)
 
+BcryptPasswordEncoder is mostly used password encoder
+
+NoOpPasswordEncoder BEan
+@Bean
+	@SuppressWarnings("deprecation")
+	PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+ ![image](https://github.com/user-attachments/assets/d592da1d-fdf1-46e1-ba65-116ced48d35c)
+![image](https://github.com/user-attachments/assets/e8d09d3e-f0a2-4522-9deb-ca8b3667f777)
+![image](https://github.com/user-attachments/assets/53055703-dc78-4348-b0b0-a1717ec70ba9)
+
