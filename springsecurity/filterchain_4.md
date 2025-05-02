@@ -54,7 +54,9 @@ public interface PasswordEncoder {
 
 BcryptPasswordEncoder is mostly used password encoder
 
-NoOpPasswordEncoder BEan
+NoOpPasswordEncoder BEan for only plain text password while creating a user
+Not recommended for productions
+
 ```java
 @Bean
 	@SuppressWarnings("deprecation")
@@ -65,4 +67,47 @@ NoOpPasswordEncoder BEan
  ![image](https://github.com/user-attachments/assets/d592da1d-fdf1-46e1-ba65-116ced48d35c)
 ![image](https://github.com/user-attachments/assets/e8d09d3e-f0a2-4522-9deb-ca8b3667f777)
 ![image](https://github.com/user-attachments/assets/53055703-dc78-4348-b0b0-a1717ec70ba9)
+================================================
+```java
+@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		//create user and store in your memory(tomcat)
+		//inmemory auth
+		auth.inMemoryAuthentication()
+		.withUser("gopi")
+		.password("gopi1234")
+		.roles("admin");
+	}
+	@Bean
+	PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+```
+
+![image](https://github.com/user-attachments/assets/a74190ad-9767-4428-a2af-d65f8a8b057b)
+
+becasue password is not encrypted and bcrypt password will match the ecode string
+and compare hashcode of password
+```java
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		//create user and store in your memory(tomcat)
+		//inmemory auth
+		auth.inMemoryAuthentication()
+		.withUser("gopi")
+		.password("$2a$12$BNYXdF2nDqPNrIVlBhfQA.1ZgYq8jkx9viSdMYCtl6.Uy1OEAQtXy")
+		.roles("admin");
+	}
+	@Bean
+	PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+```
+
+gopi1234=>hash=>$2a$12$BNYXdF2nDqPNrIVlBhfQA.1ZgYq8jkx9viSdMYCtl6.Uy1OEAQtXy
+
+![image](https://github.com/user-attachments/assets/b6e2f5f4-9c37-44af-adb8-653771291fa1)
+
+Introducing Spring Security password encoder
+=============================================
 
