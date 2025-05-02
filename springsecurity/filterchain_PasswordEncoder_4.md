@@ -108,6 +108,23 @@ gopi1234=>hash=>$2a$12$BNYXdF2nDqPNrIVlBhfQA.1ZgYq8jkx9viSdMYCtl6.Uy1OEAQtXy
 
 ![image](https://github.com/user-attachments/assets/b6e2f5f4-9c37-44af-adb8-653771291fa1)
 
-Introducing Spring Security password encoder
-=============================================
+to generate our hashcode
+```java
+@Autowired
+	private PasswordEncoder bcryptPasswordEncoder;
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		//create user and store in your memory(tomcat)
+		//in-memory auth
+		auth.inMemoryAuthentication()
+		.withUser("gopi")
+		.password(bcryptPasswordEncoder.encode("gopi1234"))
+		.roles("admin");
+	}
+```
+
+![image](https://github.com/user-attachments/assets/5451ba3e-4278-49da-8fb8-de604b3ea96b)
+![image](https://github.com/user-attachments/assets/8d8c6cc8-c817-4bc0-a131-02ccf0573e2c)
+![image](https://github.com/user-attachments/assets/a06dd717-7fd4-4041-9d0c-4b3b22e85500)
+![image](https://github.com/user-attachments/assets/b78f3348-18bd-428f-b33b-bd5c2242f963)
 
