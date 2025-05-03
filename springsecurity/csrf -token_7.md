@@ -166,4 +166,51 @@ but my code is:
 </body>
 </html>
 ```
+Spring Security **generates a CSRF token** for **any request that could modify data**, specifically for the following **HTTP methods**:
+
+---
+
+### ✅ CSRF token is **generated and required** for:
+
+* `POST`
+* `PUT`
+* `PATCH`
+* `DELETE`
+
+These are considered **state-changing** operations (they create, update, or delete data), and therefore need protection against CSRF attacks.
+
+---
+
+### ❌ CSRF token is **NOT required** for:
+
+* `GET`
+* `HEAD`
+* `OPTIONS`
+* `TRACE`
+
+These are considered **safe methods** (they only retrieve data, not modify it), so Spring does not enforce CSRF checks for them.
+
+---
+
+### 🔒 Example:
+
+If you're submitting a login form like this:
+
+```html
+<form action="/doLogin" method="post">
+```
+
+Spring expects a valid CSRF token in the request. If missing → `403 Forbidden`.
+
+---
+
+### ✅ CSRF Token Lifecycle
+
+* It’s generated when the session is created (usually first GET to the app).
+* Available as `${_csrf.token}` in JSP (or via `CsrfToken` in controller).
+* Sent back with each POST request.
+
+---
+
+Would you like a real-world example with controller + form + CSRF token flow?
 
