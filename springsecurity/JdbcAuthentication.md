@@ -123,4 +123,99 @@ INSERT INTO  authorities values('ravi','ROLE_USER');
 SELECT  * FROM  authorities;
 ```
 ![image](https://github.com/user-attachments/assets/0b0a381e-6e94-4524-88e9-ac34715d43ca)
+```java
+va
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>5.0.1.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.2.0</version>
+		</dependency>
+	@Bean
+	public DataSource dataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setUsername("root");
+		dataSource.setPassword("19JRbgopi7@");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/security_db");
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		return dataSource;
+	}
+```
+### using NOOP PasswordEncoder
+```java
+package springsecurityexample.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity(debug = true)
+//1.creates a filter chain
+public class SpringSecurityFilterCustom extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	private PasswordEncoder bcryptPasswordEncoder;
+	@Autowired
+	private DataSource datasource;;
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		//load the users info  from db
+		auth.jdbcAuthentication()
+		.dataSource(datasource)
+		.passwordEncoder(NoOpPasswordEncoder.getInstance());	
+	}
+	
+}
+```
+### using Bcrypt
+```java
+package springsecurityexample.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity(debug = true)
+//1.creates a filter chain
+public class SpringSecurityFilterCustom extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	private PasswordEncoder bcryptPasswordEncoder;
+	@Autowired
+	private DataSource datasource;;
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		//load the users info  from db
+		//using NOOP
+		/*
+		 * auth.jdbcAuthentication() .dataSource(datasource)
+		 * .passwordEncoder(NoOpPasswordEncoder.getInstance());
+		 */
+		//using Bcrypt
+		auth.jdbcAuthentication()
+		.dataSource(datasource)
+		.passwordEncoder(bcryptPasswordEncoder);
+	}
+	
+}
+```
