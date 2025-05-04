@@ -396,4 +396,51 @@ src/
 
 ---
 
-Would you like me to generate the full project structure for download as a `.zip` file or Maven project?
+```java
+package springsecurityexample.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity(debug = true)
+//1.creates a filter chain
+public class SpringSecurityFilterCustom extends WebSecurityConfigurerAdapter{
+	//2.create a user with roles
+	//username,password,role(admin,user..)
+	//configure(AuthenticationManagerBuilder
+	
+	@Autowired
+	private PasswordEncoder bcryptPasswordEncoder;
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		//create user and store in your memory(tomcat)
+		//inmemory auth
+		auth.inMemoryAuthentication()
+		.withUser("gopi")
+		.password(bcryptPasswordEncoder.encode("gopi1234"))
+		.roles("admin");	
+	}
+	//custom form login
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+	    http
+	        .authorizeRequests()
+	            .antMatchers("/login", "/resources/**").permitAll() // allow access to login page
+	            .anyRequest().authenticated()
+	            .and()
+	            .formLogin()
+	            .loginPage("/login")               // Custom login page (GET)
+	            .loginProcessingUrl("/process-dologin")    // Custom POST endpoint for login
+	            .defaultSuccessUrl("/home")        // Where to go on success
+	            .permitAll()
+	            .and()
+	            .logout();
+	}
+	
+	
+}
+```
