@@ -15,6 +15,7 @@
 * ### 2.1 Required Applications and Tools
   *  <table>
     <tr>
+      <td>1</td>
       <td>Java</td>
       <td><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" width="40"/></td>
       <td>JDK 21 - LTS Temurin 21.0.7+6-LTS</td>
@@ -23,28 +24,53 @@
       </a> </td>
     </tr>
     <tr>
+        <td>2</td>
+       <td>Maven</td>
       <td><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/maven/maven-original-wordmark.svg" width="40"/></td>
       <td>Maven 3.9.9</td>
+       <td>  <a href="https://maven.apache.org/download.cgi" target="_blank" style="text-decoration: none;">
+     Download
+      </a> </td>
     </tr>
     <tr>
-      <td><img src="https://avatars.githubusercontent.com/u/5429470?s=200&v=4" width="40"/></td>
+      <td>3</td>
       <td>Trivy</td>
+      <td><img src="https://github.com/user-attachments/assets/629f802b-9e8b-4b20-bdd9-8dd9fe27efc9" width="40"/></td>
+      <td>Trivy</td>
+       <td>  <a href="https://maven.apache.org/download.cgi" target="_blank" style="text-decoration: none;">
+     Download
+      </a> </td>
+    </tr>
+   
+
+    <tr>
+      <td>4</td>
+      <td>STS/EClipse/Vscode</td>
+      <td><img src="https://github.com/user-attachments/assets/59ccd534-16dc-4d06-9406-77bc4dee3352" width="40"/></td>
+       <td>STS</td>
+       <td>  <a href="https://spring.io/tools" target="_blank" style="text-decoration: none;">
+     Download
+      </a> </td>
     </tr>
     <tr>
-      <td><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/eclipse/eclipse-original.svg" width="40"/></td>
-      <td>STS / VS Code / Eclipse</td>
-    </tr>
-    <tr>
-      <td><img src="https://avatars.githubusercontent.com/u/12418716?s=200&v=4" width="40"/></td>
+      <td>5</td>
       <td>EclEmma</td>
+      <td><img src="https://github.com/user-attachments/assets/473ddeea-054c-4e3b-894c-87326e8d3a2f" width="40"/></td>
+      <td>EclEmma 3.9.5 Pulgin in IDLE</td>
+       <td>  <a href="https://spring.io/tools" target="_blank" style="text-decoration: none;">
+       Plugin Download
+      </a> </td>
     </tr>
     <tr>
+      <td>6</td>
+       <td>Git</td>
       <td><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" width="40"/></td>
-      <td>Git</td>
+      <td>Git 2.x.x</td>
+       <td>  <a href="https://git-scm.com/downloads" target="_blank" style="text-decoration: none;">
+     Download
+      </a> </td>
     </tr>
   </table>
-### 2.1 Required Applications and Tools
 
-The following tools are required for **Utilities-Recon**:
 
 
