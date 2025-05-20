@@ -26,7 +26,7 @@
     <tr>
         <td>2</td>
        <td>Maven</td>
-      <td><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/maven/maven-original-wordmark.svg" width="40"/></td>
+      <td><img src="https://github.com/user-attachments/assets/bd4ac478-2084-4e59-8464-227c0bf1f482" width="40"/></td>
       <td>Maven 3.9.9</td>
        <td>  <a href="https://maven.apache.org/download.cgi" target="_blank" style="text-decoration: none;">
      Download
@@ -36,8 +36,8 @@
       <td>3</td>
       <td>Trivy</td>
       <td><img src="https://github.com/user-attachments/assets/629f802b-9e8b-4b20-bdd9-8dd9fe27efc9" width="40"/></td>
-      <td>Trivy</td>
-       <td>  <a href="https://maven.apache.org/download.cgi" target="_blank" style="text-decoration: none;">
+      <td>Trivy V0.62</td>
+       <td>  <a href="https://trivy.dev/v0.62/getting-started/installation/" target="_blank" style="text-decoration: none;">
      Download
       </a> </td>
     </tr>
@@ -57,8 +57,8 @@
       <td>EclEmma</td>
       <td><img src="https://github.com/user-attachments/assets/473ddeea-054c-4e3b-894c-87326e8d3a2f" width="40"/></td>
       <td>EclEmma 3.9.5 Pulgin in IDLE</td>
-       <td>  <a href="https://spring.io/tools" target="_blank" style="text-decoration: none;">
-       Plugin Download
+       <td>  <a href="https://www.eclemma.org/installation.html#marketplace" target="_blank" style="text-decoration: none;">
+       Plugin 
       </a> </td>
     </tr>
     <tr>
