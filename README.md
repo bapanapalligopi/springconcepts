@@ -18,7 +18,7 @@
       <td>1</td>
       <td>Java</td>
       <td><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" width="40"/></td>
-      <td>JDK 21 - LTS Temurin 21.0.7+6-LTS</td>
+      <td>JDK 17 - LTS Temurin </td>
       <td>  <a href="https://adoptium.net/temurin/releases/?package=jdk&version=21&os=any&arch=any" target="_blank" style="text-decoration: none;">
      Download
       </a> </td>
