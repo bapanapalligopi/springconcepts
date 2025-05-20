@@ -41,8 +41,6 @@
      Download
       </a> </td>
     </tr>
-   
-
     <tr>
       <td>4</td>
       <td>STS/EClipse/Vscode</td>
@@ -71,6 +69,12 @@
       </a> </td>
     </tr>
   </table>
+
+
+
+
+
+
 * ### 2.2  Applications Setup
     * #### 2.2.1 Java 17 Setup Guide
       * Java 17 must be properly installed and configured to build and run Utilities-Recon.
