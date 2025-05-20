@@ -76,152 +76,178 @@
 
 
 * ### 2.2  Applications Setup
-    * #### 2.2.1 Java 17 Setup Guide
-      * Java 17 must be properly installed and configured to build and run Utilities-Recon.
-      * Download the JDK from [Adoptium Temurin Java 17](https://adoptium.net/temurin/releases/?package=jdk&version=17&os=any&arch=any).
-      *  Install Java 17-Complete the installation with default settings.
-      *  After installation, Java will typically be installed in:
-      *  **Windows:** `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
-      *  **macOS/Linux:** `/Library/Java/JavaVirtualMachines/` or `/usr/lib/jvm/`
-      *  Set JAVA\_HOME and Update Path
-           *  1. Open **System Properties** → **Environment Variables**
-              2. Under "System variables", click **New**:
-              3. * **Variable name:** `JAVA_HOME`
-              4. * **Variable value:** `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
-              5. Edit the **Path** variable and add: %JAVA_HOME%\bin
-      * Verify Installation
-          * ```java -version```
-          * ```java version "17.0.8" 2023-07-18 LTS Eclipse Adoptium (Temurin)```
+  * #### 2.2.1 Java 17 Setup Guide
+    * 
+      <details>
+        <summary>Click to expand for detailed setup</summary>
+      
+        * Download the JDK from [Adoptium Temurin Java 17](https://adoptium.net/temurin/releases/?package=jdk&version=17&os=any&arch=any).
+        * Install Java 17 - Complete the installation with default settings.
+        * After installation, Java will typically be installed in:
+          * **Windows:** `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
+          * **macOS/Linux:** `/Library/Java/JavaVirtualMachines/` or `/usr/lib/jvm/`
+        * Set `JAVA_HOME` and Update Path:
+          1. Open **System Properties** → **Environment Variables**
+          2. Under "System variables", click **New**:
+            3. **Variable name:** `JAVA_HOME`
+            4. **Variable value:** `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
+            5. Edit the **Path** variable and add: `%JAVA_HOME%\bin`
+        * Verify Installation:
+          ```bash
+          java -version
+          ```
+          Expected output:
+          ```bash
+          java version "17.0.8" 2023-07-18 LTS Eclipse Adoptium (Temurin)
+          ```
+      
+      </details>
     
    * #### 2.2.2 Maven 3.9.9 Setup Guide
-      * Maven 3.9.9 must be properly installed and configured to build and run Utilities-Recon.
-      * Download the binary zip archive from the [Apache Maven 3.9.9](https://maven.apache.org/download.cgi) website.
-      * Extract the archive to a desired location, such as:
-          * **Windows:** `C:\Program Files\Apache\Maven\apache-maven-3.9.9`
-          **macOS/Linux:** `/opt/apache-maven-3.9.9` or `~/apache-maven-3.9.9`
-      * Set `MAVEN_HOME` and Update Path
-        1. Open **System Properties** → **Environment Variables**
-        2. Under "System variables", click **New**:
-    
-           * **Variable name:** `MAVEN_HOME`
-           * **Variable value:** `C:\Program Files\Apache\Maven\apache-maven-3.9.9`
-        3. Edit the **Path** variable and add: `%MAVEN_HOME%\bin`
-           *(For macOS/Linux: add `export PATH=$MAVEN_HOME/bin:$PATH` to `.bashrc`, `.zshrc`, or `.bash_profile`)*
-      * Verify Installation
-          * Open a terminal or command prompt and run:
-      
-            ```shell
+      * 
+        <details>
+          <summary>Click to expand for detailed setup</summary>
+          
+          * Download the binary zip archive from the [Apache Maven 3.9.9](https://maven.apache.org/download.cgi) website.
+          * Extract the archive to a desired location, such as:
+            * **Windows:** `C:\Program Files\Apache\Maven\apache-maven-3.9.9`
+            * **macOS/Linux:** `/opt/apache-maven-3.9.9` or `~/apache-maven-3.9.9`
+          * Set `MAVEN_HOME` and Update Path:
+            1. Open **System Properties** → **Environment Variables**
+            2. Under "System variables", click **New**:
+              3. **Variable name:** `MAVEN_HOME`
+              4. **Variable value:** `C:\Program Files\Apache\Maven\apache-maven-3.9.9`
+            3. Edit the **Path** variable and add: `%MAVEN_HOME%\bin`
+               *(For macOS/Linux: add `export PATH=$MAVEN_HOME/bin:$PATH` to `.bashrc`, `.zshrc`, or `.bash_profile`)*
+          * Verify Installation:
+            ```bash
             mvn -version
             ```
-          * Expected output:
-    
-            ```shell
+            Expected output:
+            ```bash
             Apache Maven 3.9.9
             Maven home: C:\Program Files\Apache\Maven\apache-maven-3.9.9
             Java version: 17.0.8, vendor: Eclipse Adoptium
             ```
+        
+        </details>
     * #### 2.2.3 Git Setup Guide
-      * Git must be properly installed and configured to clone, manage, and collaborate on the Utilities-Recon project.
-      * Download the installer from the [Official Git Website](https://git-scm.com/downloads).
-      * Install Git — complete the installation using default settings unless specific customization is required.
-      * After installation, Git will typically be installed in:
+      * <details>
+        <summary>Click to expand for detailed setup</summary>
+        
+        * Download the installer from the [Official Git Website](https://git-scm.com/downloads).
+        * Install Git — complete the installation using default settings unless specific customization is required.
+        * After installation, Git will typically be installed in:
           * **Windows:** `C:\Program Files\Git`
           * **macOS (via Homebrew):** `/usr/local/git`
           * **Linux (via package manager):** `/usr/bin/git` or similar
-      * Add Git to System PATH (usually done automatically by the installer)
+        * Add Git to System PATH (usually done automatically by the installer):
           1. Open **System Properties** → **Environment Variables**
           2. Edit the **Path** system variable
-          3. Add the path to Git’s `bin` and `cmd` directories:  
+          3. Add the path to Git’s `bin` and `cmd` directories:
              * **Windows example:**
-      
                ```
                C:\Program Files\Git\bin  
                C:\Program Files\Git\cmd  
                ```
              * *(On macOS/Linux, ensure Git is in the terminal path using `which git`)*
-      * Verify Installation
-        * Open a terminal or command prompt and run:
-          ```shell
-          git --version
-          ```
-        * Expected output:
-          ```shell
-          git version 2.43.0
-          ```
+        * Verify Installation:
+          * Open a terminal or command prompt and run:
+            ```shell
+            git --version
+            ```
+          * Expected output:
+            ```shell
+            git version 2.43.0
+            ```
+      
+      </details>
+      
   * #### 2.2.4 Spring Tool Suite (STS) Setup Guide
-    * STS (Spring Tool Suite) is the recommended IDE for developing and managing the Utilities-Recon project.
-    * Download the latest STS version from the [Spring Tools official website](https://spring.io/tools).
-    * Choose the distribution appropriate for your operating system and extract or install it:
-        * **Windows:** Installer or ZIP archive
-        * **macOS/Linux:** tar.gz archive
-    * Suggested installation locations:
-        * **Windows:** `C:\Program Files\SpringToolSuite4`
-        * **macOS/Linux:** `/Applications/SpringToolSuite4.app` or `~/sts-4.x.x.RELEASE`
-    * Launch STS and configure workspace
-        1. Start STS by launching `SpringToolSuite4.exe` or the `.app`/shell script
-        2. When prompted, set the workspace directory (e.g., `C:\workspace\utilities-recon`)
-    * Configure JDK and Maven in STS
-        * **Set JDK 17:**
-            1. Go to **Window** → **Preferences** → **Java** → **Installed JREs**
-            2. Click **Add**, select **Standard VM**, and set JDK 17 path (e.g., `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`)
-            3. Check the box to make it the default
-        * **Verify Maven settings (optional):**    
-            1. Go to **Window** → **Preferences** → **Maven** → **Installations**
-            2. Ensure Maven 3.9.9 is either detected or manually added
-    * Install recommended STS plugins (if needed):
-        * **Spring Boot Tools**
-        * **Buildship Gradle Integration** (if using Gradle modules)
-    * Verify Setup
-      * Create or import a sample Maven project
-      * Build and run to ensure STS recognizes the Java 17 and Maven 3.9.9 setup correctly
-
-  * #### 2.2.5 Trivy Setup Guide  
-    * Trivy is a vulnerability scanner for containers and other artifacts and is used to ensure the security of Utilities-Recon deployments.
-    * Download Trivy from the [official GitHub releases page](https://github.com/aquasecurity/trivy/releases) or install it via package manager.
-    * Choose the appropriate method based on your operating system:
-        **Windows (using .exe file):**
-        1. Download the `trivy_*.zip` file for Windows
-        2. Extract it to a directory, e.g.:
-         ```
-         C:\Tools\Trivy
-         ```
-      3. Add this directory to the system PATH:
-         * Open **System Properties** → **Environment Variables**
-         * Edit the **Path** system variable
-         * Add: `C:\Tools\Trivy`
-    * Verify Installation
-      * Open terminal or command prompt and run:
-        ```bash
-        trivy --version
-        ```
-      * Expected output:
-  
-        ```text
-        Version: 0.50.1
-        Vulnerability DB: 2024-05-19
-        ```
-  * #### 2.2.6 EclEmma Plugin Setup Guide (Code Coverage in STS)
-    * EclEmma is a Java code coverage plugin for Eclipse-based IDEs like Spring Tool Suite (STS), used to measure test coverage for the Utilities-Recon project.
-    * This plugin helps ensure sufficient test coverage for reliable and maintainable code.
-    * Steps to Install EclEmma in STS:
-      1. Open **Spring Tool Suite (STS)**
-      2. Navigate to **Help** → **Eclipse Marketplace**
-      3. In the **"Find"** field, type:
-         ```
-         EclEmma Java Code Coverage
-         ```
-      4. Click **Go**, find the plugin in the results, and click **Install**
-      5. Follow the installation prompts and restart STS when prompted
-    * Verify Installation
-        * After restarting, right-click any Java class or test class →
-          You should see options like:
-          * **Coverage As** → **JUnit Test**
-          * **Coverage As** → **Java Application** 
-    * Optional: Enable Code Coverage View
-        1. Go to **Window** → **Show View** → **Other**
-        2. Search for and select **Coverage** under the **Java** category
-        3. This will show coverage results and statistics after running tests with coverage
+      * <details>
+          <summary>Click to expand for detailed setup</summary>
+          
+          * Download the latest STS version from the [Spring Tools official website](https://spring.io/tools).
+          * Choose the distribution appropriate for your operating system and extract or install it:
+            * **Windows:** Installer or ZIP archive
+            * **macOS/Linux:** tar.gz archive
+          * Suggested installation locations:
+            * **Windows:** `C:\Program Files\SpringToolSuite4`
+            * **macOS/Linux:** `/Applications/SpringToolSuite4.app` or `~/sts-4.x.x.RELEASE`
+          * Launch STS and configure workspace:
+            1. Start STS by launching `SpringToolSuite4.exe` or the `.app`/shell script
+            2. When prompted, set the workspace directory (e.g., `C:\workspace\utilities-recon`)
+          * Configure JDK and Maven in STS:
+            * **Set JDK 17:**
+              1. Go to **Window** → **Preferences** → **Java** → **Installed JREs**
+              2. Click **Add**, select **Standard VM**, and set JDK 17 path (e.g., `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`)
+              3. Check the box to make it the default
+            * **Verify Maven settings (optional):**
+              1. Go to **Window** → **Preferences** → **Maven** → **Installations**
+              2. Ensure Maven 3.9.9 is either detected or manually added
+          * Install recommended STS plugins (if needed):
+            * **Spring Boot Tools**
+            * **Buildship Gradle Integration** (if using Gradle modules)
+          * Verify Setup:
+            * Create or import a sample Maven project
+            * Build and run to ensure STS recognizes the Java 17 and Maven 3.9.9 setup correctly
+        
+        </details>
     
+  * #### 2.2.5 Trivy Setup Guide  
+     * <details>
+          <summary>Click to expand for detailed setup</summary>
+        
+          * Download Trivy from the [official GitHub releases page](https://github.com/aquasecurity/trivy/releases) or install it via a package manager.
+          * Choose the appropriate method based on your operating system:
+            * **Windows (using .exe file):**
+              1. Download the `trivy_*.zip` file for Windows
+              2. Extract it to a directory, e.g.:
+                 ```
+                 C:\Tools\Trivy
+                 ```
+              3. Add this directory to the system PATH:
+                 * Open **System Properties** → **Environment Variables**
+                 * Edit the **Path** system variable
+                 * Add: `C:\Tools\Trivy`
+          * Verify Installation:
+            * Open a terminal or command prompt and run:
+              ```bash
+              trivy --version
+              ```
+            * Expected output:
+              ```text
+              Version: 0.50.1
+              Vulnerability DB: 2024-05-19
+              ```
+        
+        </details>
+
+  * #### 2.2.6 EclEmma Plugin Setup Guide (Code Coverage in STS)
+    *  <details>
+        <summary>Click to expand for detailed setup</summary>
+      
+        * Steps to Install EclEmma in STS:
+          1. Open **Spring Tool Suite (STS)**
+          2. Navigate to **Help** → **Eclipse Marketplace**
+          3. In the **"Find"** field, type:
+             ```
+             EclEmma Java Code Coverage
+             ```
+          4. Click **Go**, find the plugin in the results, and click **Install**
+          5. Follow the installation prompts and restart STS when prompted
+        * Verify Installation:
+          * After restarting, right-click any Java class or test class →  
+            You should see options like:
+            * **Coverage As** → **JUnit Test**
+            * **Coverage As** → **Java Application**
+        * Optional: Enable Code Coverage View:
+          1. Go to **Window** → **Show View** → **Other**
+          2. Search for and select **Coverage** under the **Java** category
+          3. This will show coverage results and statistics after running tests with coverage
+      
+      </details>
+        
 
 
     
