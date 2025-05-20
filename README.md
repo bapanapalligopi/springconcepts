@@ -71,6 +71,31 @@
       </a> </td>
     </tr>
   </table>
+* ### 2.2  Applications Setup
+    * #### 2.2.1 Java 17 Setup Guide
+      * Java 17 must be properly installed and configured to build and run Utilities-Recon.
+      * Download the JDK from [Adoptium Temurin Java 17](https://adoptium.net/temurin/releases/?package=jdk&version=17&os=any&arch=any).
+      *  Install Java 17-Complete the installation with default settings.
+      *  After installation, Java will typically be installed in:
+      *  **Windows:** `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
+      *  **macOS/Linux:** `/Library/Java/JavaVirtualMachines/` or `/usr/lib/jvm/`
+      *  Set JAVA\_HOME and Update Path
+           *  1. Open **System Properties** → **Environment Variables**
+              2. Under "System variables", click **New**:
+              3. * **Variable name:** `JAVA_HOME`
+              4. * **Variable value:** `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
+              5. Edit the **Path** variable and add: %JAVA_HOME%\bin
+      * Verify Installation
+          * ```java -version```
+          * ```java version "17.0.8" 2023-07-18 LTS Eclipse Adoptium (Temurin)```
+       
+
+   
+
+
+
+
+
 
 
 
