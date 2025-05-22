@@ -1,0 +1,19 @@
+<!--Vulnerability Report in SBOM using cycloneDx Format Json-->
+			<plugin>
+				<groupId>org.cyclonedx</groupId>
+				<artifactId>cyclonedx-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>makeAggregateBom</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outputFormat>json</outputFormat>
+					<schemaVersion>1.4</schemaVersion>
+					<outputName>sbom</outputName>
+					<outputDirectory>${project.build.directory}/cycloneDx</outputDirectory>
+				</configuration>
+			</plugin>
