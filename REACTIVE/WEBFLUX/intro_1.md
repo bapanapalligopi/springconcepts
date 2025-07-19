@@ -126,4 +126,4 @@
 
 ---
 
-This structured summary aligns with the original content flow and provides concise yet in-depth insights into Spring Web Flux and reactive programming essentials.
+<img width="3322" height="4464" alt="NoteGPT_MindMap_1752901122603" src="https://github.com/user-attachments/assets/e8275165-ed3b-4203-883a-94577eed499c" />
