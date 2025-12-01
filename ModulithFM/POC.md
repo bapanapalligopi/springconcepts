@@ -1,11 +1,3 @@
-Below is a **clean, structured document** you can use as a reference, training material, or study guide. It includes:
-
-✅ A full write-up based on the tutorial you provided
-✅ A clear explanation of Spring Modulith concepts
-✅ A comparison between **Microservices** and **Spring Modulith**
-✅ Organized sections, diagrams (text-based), and code snippets
-
----
 
 # **📘 Spring Modulith – Comprehensive Guide**
 
