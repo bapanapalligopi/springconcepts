@@ -5,6 +5,7 @@ Start ZooKeeper with the following command (in `C:\kafka\bin\windows` directory)
 ```cmd
 zookeeper-server-start.bat config\zookeeper.properties
 zookeeper-server-start.bat ..\..\config\zookeeper.properties
+./zookeeper-server-start.sh ../config/zookeeper.properties(gitBash)
 ```
 
 ### **2. Test ZooKeeper Connection**
@@ -25,6 +26,7 @@ You should see something like:
 Start Kafka (in `C:\kafka\bin\windows` directory):
 ```cmd
 kafka-server-start.bat config\server.properties
+./kafka-server-start.sh ../config/server.properties(GIT BASH)
 ```
 
 ### **4. Verify Kafka Logs**
