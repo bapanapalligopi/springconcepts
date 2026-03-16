@@ -40,6 +40,7 @@ Kafka is now listening on port `9092` for connections.
 To create a new Kafka topic (e.g., `test-topic`), run:
 ```cmd
 kafka-topics.bat --create --topic test-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+./kafka-topics.sh --create --topic test-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
 ```
 
 ### **6. List Kafka Topics**
@@ -52,6 +53,7 @@ kafka-topics.bat --list --bootstrap-server localhost:9092
 Start producing messages to the topic (e.g., `test-topic`):
 ```cmd
 kafka-console-producer.bat --topic test-topic --bootstrap-server localhost:9092
+./kafka-console-producer.sh --topic test-topic --bootstrap-server localhost:9092
 ```
 You can type messages and hit Enter to send them.
 
@@ -59,6 +61,7 @@ You can type messages and hit Enter to send them.
 Start consuming messages from the topic:
 ```cmd
 kafka-console-consumer.bat --topic test-topic --bootstrap-server localhost:9092 --from-beginning
+./kafka-console-consumer.sh --topic test-topic --bootstrap-server localhost:9092 --from-beginning
 ```
 
 ---
