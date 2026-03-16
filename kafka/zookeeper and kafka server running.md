@@ -4,6 +4,7 @@ Here's a summary of all the commands you've run and need to run for setting up a
 Start ZooKeeper with the following command (in `C:\kafka\bin\windows` directory):
 ```cmd
 zookeeper-server-start.bat config\zookeeper.properties
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
 ```
 
 ### **2. Test ZooKeeper Connection**
