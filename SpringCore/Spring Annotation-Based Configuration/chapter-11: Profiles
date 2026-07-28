@@ -1,0 +1,551 @@
+Excellent. Let's continue.
+
+The next topic is **Spring Profiles (`@Profile`)**, which is commonly used in real Spring Boot projects and frequently asked in interviews.
+
+---
+
+# Chapter 10: Spring Profiles (`@Profile`)
+
+Before learning `@Profile`, let's understand the problem it solves.
+
+---
+
+# The Problem
+
+Suppose you're developing an Employee Management System.
+
+While developing, you use your local database.
+
+```text
+Database
+
+↓
+
+localhost
+
+↓
+
+Username = root
+
+↓
+
+Password = root123
+```
+
+Your `application.properties` looks like:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/employeedb
+spring.datasource.username=root
+spring.datasource.password=root123
+```
+
+Everything works fine.
+
+---
+
+Now your application moves to the Testing environment.
+
+The database changes.
+
+```text
+Testing Server
+
+↓
+
+10.20.30.40
+
+↓
+
+Username = test
+
+↓
+
+Password = test123
+```
+
+Again, when it moves to Production,
+
+```text
+Production
+
+↓
+
+192.168.100.10
+
+↓
+
+Username = prod
+
+↓
+
+Password = prod@123
+```
+
+Question:
+
+Should you edit `application.properties` every time you deploy?
+
+**No.**
+
+That is risky and error-prone.
+
+---
+
+# Solution
+
+Spring provides **Profiles**.
+
+A profile lets you maintain **different configurations for different environments**.
+
+Think of it like this:
+
+```text
+Development
+
+↓
+
+application-dev.properties
+
+-------------------------
+
+Testing
+
+↓
+
+application-test.properties
+
+-------------------------
+
+Production
+
+↓
+
+application-prod.properties
+```
+
+Only one profile is active at a time.
+
+---
+
+# Folder Structure
+
+```
+src/main/resources
+
+application.properties
+
+application-dev.properties
+
+application-test.properties
+
+application-prod.properties
+```
+
+---
+
+# Example
+
+## application-dev.properties
+
+```properties
+server.port=8080
+
+company.name=Development Environment
+```
+
+---
+
+## application-test.properties
+
+```properties
+server.port=8081
+
+company.name=Testing Environment
+```
+
+---
+
+## application-prod.properties
+
+```properties
+server.port=9090
+
+company.name=Production Environment
+```
+
+Each environment has its own settings.
+
+---
+
+# Activating a Profile
+
+Inside `application.properties`
+
+```properties
+spring.profiles.active=dev
+```
+
+Spring loads
+
+```text
+application-dev.properties
+```
+
+If you write
+
+```properties
+spring.profiles.active=prod
+```
+
+Spring loads
+
+```text
+application-prod.properties
+```
+
+---
+
+# Real Project Example
+
+Suppose you have
+
+```properties
+# application-dev.properties
+
+spring.datasource.url=jdbc:mysql://localhost:3306/employeedb
+```
+
+and
+
+```properties
+# application-prod.properties
+
+spring.datasource.url=jdbc:mysql://192.168.1.100:3306/employeedb
+```
+
+Your Java code never changes.
+
+```java
+@Service
+public class EmployeeService {
+
+}
+```
+
+Only the active profile changes.
+
+---
+
+# @Profile Annotation
+
+Profiles are not only for properties.
+
+You can also create beans based on the active profile.
+
+Example:
+
+```java
+public interface NotificationService {
+
+    void send();
+
+}
+```
+
+---
+
+Development implementation
+
+```java
+@Service
+@Profile("dev")
+public class ConsoleNotificationService
+        implements NotificationService {
+
+    @Override
+    public void send() {
+        System.out.println("Console Notification");
+    }
+
+}
+```
+
+---
+
+Production implementation
+
+```java
+@Service
+@Profile("prod")
+public class EmailNotificationService
+        implements NotificationService {
+
+    @Override
+    public void send() {
+        System.out.println("Email Notification");
+    }
+
+}
+```
+
+---
+
+Suppose
+
+```properties
+spring.profiles.active=dev
+```
+
+Spring creates
+
+```text
+ConsoleNotificationService
+```
+
+If
+
+```properties
+spring.profiles.active=prod
+```
+
+Spring creates
+
+```text
+EmailNotificationService
+```
+
+No code changes.
+
+---
+
+# Visual Flow
+
+```text
+Application Starts
+
+↓
+
+Read Active Profile
+
+↓
+
+dev
+
+↓
+
+Load application-dev.properties
+
+↓
+
+Create Beans with @Profile("dev")
+
+↓
+
+Application Ready
+```
+
+---
+
+# Why is This Useful?
+
+Imagine you're developing locally.
+
+You don't want to send real emails.
+
+Instead
+
+```text
+Development
+
+↓
+
+Print Message on Console
+```
+
+In Production
+
+```text
+Production
+
+↓
+
+Send Actual Email
+```
+
+Same interface.
+
+Different implementation.
+
+---
+
+# Real Company Example
+
+Suppose your project uses payment gateways.
+
+Development
+
+```text
+Fake Payment Gateway
+```
+
+Testing
+
+```text
+Sandbox Payment Gateway
+```
+
+Production
+
+```text
+Real Razorpay
+```
+
+Spring Profiles let you switch between them easily.
+
+---
+
+# Can We Use Multiple Profiles?
+
+Yes.
+
+```properties
+spring.profiles.active=dev,redis
+```
+
+Now Spring loads beans for both profiles.
+
+This is more common in larger projects.
+
+---
+
+# Interview Questions
+
+### 1. What is a Spring Profile?
+
+A Spring Profile allows you to define environment-specific configurations and beans for different environments like Development, Testing, and Production.
+
+---
+
+### 2. Why do we use Profiles?
+
+To avoid changing source code or configuration manually when deploying to different environments.
+
+---
+
+### 3. How do you activate a profile?
+
+Using:
+
+```properties
+spring.profiles.active=dev
+```
+
+---
+
+### 4. Can `@Profile` be used on a bean?
+
+Yes.
+
+Example:
+
+```java
+@Service
+@Profile("prod")
+public class EmailService {
+
+}
+```
+
+This bean is created only when the `prod` profile is active.
+
+---
+
+### 5. Where have you used Profiles in your project?
+
+A good interview answer:
+
+> "We used profiles to maintain different configurations for Development, Testing, and Production. Database URLs, API endpoints, logging levels, and external service configurations varied by profile, allowing us to deploy the same application without modifying the code."
+
+---
+
+# Summary
+
+```text
+Development
+        │
+        ▼
+application-dev.properties
+
+-------------------------
+
+Testing
+        │
+        ▼
+application-test.properties
+
+-------------------------
+
+Production
+        │
+        ▼
+application-prod.properties
+
+-------------------------
+
+spring.profiles.active=dev
+
+↓
+
+Spring loads
+
+↓
+
+application-dev.properties
+```
+
+---
+
+# 🎉 Spring Core Status
+
+At the **1.5–2 years experience level**, we've now covered almost everything you should know about Spring Core:
+
+* ✅ IoC Container
+* ✅ Dependency Injection
+* ✅ XML Configuration
+* ✅ Annotation Configuration
+* ✅ `@Component`
+* ✅ `@ComponentScan`
+* ✅ `@Autowired`
+* ✅ `@Qualifier`
+* ✅ `@Primary`
+* ✅ Constructor/Setter/Field Injection
+* ✅ Bean Scope
+* ✅ Bean Lifecycle
+* ✅ `@Bean`
+* ✅ `@Configuration`
+* ✅ `@Value`
+* ✅ `@Profile`
+
+---
+
+# Next Major Module
+
+The next module is **Spring AOP (Aspect-Oriented Programming)**.
+
+This is another **high-priority interview topic** for 1–3 years of experience.
+
+We'll cover it from scratch:
+
+1. What problem does AOP solve?
+2. What are cross-cutting concerns?
+3. What is an Aspect?
+4. Advice (`@Before`, `@After`, `@Around`, etc.)
+5. Pointcuts
+6. Join Points
+7. Practical logging example
+8. Transaction example
+9. Exception handling with AOP
+10. Interview questions
+
+AOP is much easier to understand if you first understand the problem it was designed to solve, so that's exactly where we'll begin.
