@@ -509,3 +509,344 @@ You'll understand:
 * `autowire="no"` (default)
 
 Once you master XML autowiring, annotations like `@Autowired` will feel natural because you'll know exactly what Spring is doing behind the scenes.
+## Spring Bean Life Cycle (XML Configuration)
+
+The Spring Bean Life Cycle describes what happens to a bean from the moment it is created until it is destroyed.
+
+### Bean Life Cycle Flow
+
+```text
+Container Started
+       │
+       ▼
+Bean Instantiation (Constructor)
+       │
+       ▼
+Setter Injection
+       │
+       ▼
+init-method()
+       │
+       ▼
+Bean Ready to Use
+       │
+       ▼
+Application Running
+       │
+       ▼
+destroy-method()
+       │
+       ▼
+Container Closed
+```
+
+---
+
+# Step 1: Create Bean Class
+
+```java
+package com.practice.sp.models;
+
+public class Employee {
+
+    private int id;
+    private String name;
+
+    public Employee() {
+        System.out.println("1. Constructor called");
+    }
+
+    public void setId(int id) {
+        System.out.println("2. Setter Injection for id");
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        System.out.println("3. Setter Injection for name");
+        this.name = name;
+    }
+
+    // Initialization method
+    public void init() {
+        System.out.println("4. init() method called");
+    }
+
+    // Destroy method
+    public void destroy() {
+        System.out.println("5. destroy() method called");
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + name;
+    }
+}
+```
+
+---
+
+# Step 2: XML Configuration
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="employee"
+          class="com.practice.sp.models.Employee"
+          init-method="init"
+          destroy-method="destroy">
+
+        <property name="id" value="101"/>
+        <property name="name" value="Gopi"/>
+
+    </bean>
+
+</beans>
+```
+
+---
+
+# Step 3: Main Class
+
+```java
+package com.practice.sp;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.practice.sp.models.Employee;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        ClassPathXmlApplicationContext context =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        Employee emp = context.getBean("employee", Employee.class);
+
+        System.out.println(emp);
+
+        // Mandatory for destroy-method
+        context.close();
+    }
+}
+```
+
+---
+
+# Output
+
+```text
+1. Constructor called
+2. Setter Injection for id
+3. Setter Injection for name
+4. init() method called
+101 Gopi
+5. destroy() method called
+```
+
+---
+
+# Execution Order
+
+```text
+Container Starts
+       │
+       ▼
+Constructor
+       │
+       ▼
+Setter Injection
+       │
+       ▼
+init-method
+       │
+       ▼
+Bean Ready
+       │
+       ▼
+Business Logic
+       │
+       ▼
+context.close()
+       │
+       ▼
+destroy-method
+```
+
+---
+
+# What Happens Internally?
+
+When you execute:
+
+```java
+ClassPathXmlApplicationContext context =
+        new ClassPathXmlApplicationContext("applicationContext.xml");
+```
+
+Spring performs these steps:
+
+1. Reads `applicationContext.xml`
+2. Creates the `Employee` object (constructor)
+3. Injects properties (`id`, `name`)
+4. Calls `init()`
+5. Keeps the bean in the Spring container
+
+When you call:
+
+```java
+context.close();
+```
+
+Spring:
+
+1. Calls `destroy()`
+2. Removes the bean
+3. Shuts down the container
+
+---
+
+# Using Default Init and Destroy Methods
+
+Instead of specifying `init-method` and `destroy-method` for every bean, you can configure them globally.
+
+## XML
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       https://www.springframework.org/schema/beans/spring-beans.xsd"
+
+       default-init-method="init"
+       default-destroy-method="destroy">
+
+    <bean id="employee"
+          class="com.practice.sp.models.Employee">
+
+        <property name="id" value="101"/>
+        <property name="name" value="Gopi"/>
+
+    </bean>
+
+</beans>
+```
+
+Now every bean that has `init()` and `destroy()` methods will use them automatically.
+
+---
+
+# Singleton Bean Life Cycle
+
+```text
+Application Starts
+       │
+       ▼
+Constructor
+       │
+       ▼
+Setter Injection
+       │
+       ▼
+init()
+       │
+       ▼
+Bean Used
+       │
+       ▼
+Container Closed
+       │
+       ▼
+destroy()
+```
+
+---
+
+# Prototype Bean Life Cycle
+
+If you configure:
+
+```xml
+<bean id="employee"
+      class="com.practice.sp.models.Employee"
+      scope="prototype"
+      init-method="init"
+      destroy-method="destroy"/>
+```
+
+Spring creates a new bean every time you request it.
+
+```text
+getBean()
+   │
+   ▼
+Constructor
+   │
+   ▼
+Setter Injection
+   │
+   ▼
+init()
+   │
+   ▼
+Bean Returned
+```
+
+**Important:** For **prototype** beans, Spring **does not call** the `destroy-method`. You are responsible for cleanup.
+
+---
+
+# Interview Questions
+
+### 1. What are the stages of the Spring Bean Life Cycle?
+
+1. Bean Instantiation
+2. Dependency Injection
+3. Initialization (`init-method`)
+4. Bean Ready for Use
+5. Destruction (`destroy-method`)
+
+---
+
+### 2. Which method is called first?
+
+**Constructor**
+
+---
+
+### 3. Which method is called after dependency injection?
+
+**`init-method`**
+
+---
+
+### 4. Which method is called when the container is closed?
+
+**`destroy-method`**
+
+---
+
+### 5. Is `destroy-method` called for prototype beans?
+
+**No.** Spring does not manage the complete lifecycle of prototype beans after creation.
+
+---
+
+# Quick Revision
+
+| Stage            | Description                              |
+| ---------------- | ---------------------------------------- |
+| Constructor      | Creates the bean                         |
+| Setter Injection | Injects dependencies/properties          |
+| `init-method`    | Performs initialization logic            |
+| Bean Ready       | Available for application use            |
+| `destroy-method` | Performs cleanup before bean destruction |
+
+This XML-based lifecycle (`init-method` and `destroy-method`) is commonly asked in interviews, especially when discussing the evolution from XML configuration to annotation-based configuration in Spring.
